@@ -1,0 +1,8 @@
+*.user
+*.bak
+/.vs/
+/.idea/
+/_ReSharper.*/
+/Service/*.db
+/*/obj/
+/*/bin/
