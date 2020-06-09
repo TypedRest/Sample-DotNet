@@ -21,7 +21,7 @@ namespace AddressBook
         {
             _host = CreateHostBuilder(output).Start();
             _server = _host.GetTestServer();
-            Client = new AddressBookClient(new Uri("http://localhost"), _server.CreateClient());
+            Client = new AddressBookClient(_server.CreateClient(), new Uri("http://localhost"));
         }
 
         private IHostBuilder CreateHostBuilder(ITestOutputHelper output)

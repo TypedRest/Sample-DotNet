@@ -21,10 +21,10 @@ namespace AddressBook
         /// <summary>
         /// Creates a new Address Book Client using a custom <see cref="HttpClient"/>. This is usually used for testing.
         /// </summary>
-        /// <param name="uri">The base URI of the Address Book API.</param>
         /// <param name="httpClient">The HTTP client used to communicate with the remote element.</param>
-        public AddressBookClient(Uri uri, HttpClient httpClient)
-            : base(uri, httpClient)
+        /// <param name="uri">The base URI of the Address Book API.</param>
+        public AddressBookClient(HttpClient httpClient, Uri uri)
+            : base(httpClient, uri)
         {}
 
         /// <summary>
