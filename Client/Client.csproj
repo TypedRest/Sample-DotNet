@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.7" />
-    <PackageReference Include="TypedRest" Version="1.1.0" />
+    <PackageReference Include="TypedRest" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
