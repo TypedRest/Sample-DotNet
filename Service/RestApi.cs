@@ -1,10 +1,9 @@
 ﻿using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 
 namespace AddressBook
 {
@@ -20,9 +19,10 @@ namespace AddressBook
                     opts.IncludeXmlComments(Path.Combine(ApplicationEnvironment.ApplicationBasePath, "AddressBook.xml"));
                     opts.IncludeXmlComments(Path.Combine(ApplicationEnvironment.ApplicationBasePath, "AddressBook.Dto.xml"));
                 })
+                .AddSwaggerGenNewtonsoftSupport()
                 .Configure<MvcOptions>(opts => opts.Filters.Add(typeof(ApiExceptionFilterAttribute)))
                 .AddControllers()
-                .AddJsonOptions(x => x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
         /// <summary>
         /// Registers endpoints for REST API controllers.
