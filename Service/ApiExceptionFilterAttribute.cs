@@ -33,7 +33,7 @@ namespace AddressBook
             var request = context.HttpContext.Request;
 
             context.HttpContext.Response.StatusCode = (int)statusCode;
-            context.Result = BuildResult(context.Exception);
+            context.Result = BuildResult(context.Exception, statusCode);
 
             _logger.Log(logLevel, context.Exception, "Responded to HTTP {0} {1} with {2} due to exception.",
                 request.Method, request.GetEncodedPathAndQuery(), statusCode);
@@ -53,12 +53,18 @@ namespace AddressBook
                 _ => (HttpStatusCode.InternalServerError, LogLevel.Error)
             };
 
-        private ObjectResult BuildResult(Exception exception)
-            => new ObjectResult(new
+        private ObjectResult BuildResult(Exception exception, HttpStatusCode statusCode)
+        {
+            var problem = new ProblemDetails
             {
-                message = exception.Message,
-                type = exception.GetType().Name,
-                stackTrace = _isDevelopment ? exception.StackTrace : null
-            });
+                Title = exception.GetType().Name,
+                Detail = exception.Message,
+                Status = (int)statusCode
+            };
+            if (_isDevelopment)
+                problem.Extensions["stackTrace"] = exception.StackTrace;
+
+            return new ObjectResult(problem) {ContentTypes = {"application/problem+json"}};
+        }
     }
 }
