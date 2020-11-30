@@ -38,14 +38,6 @@ namespace AddressBook
             => obj is Contact other && Equals(other);
 
         public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = Id?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (FirstName?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (LastName?.GetHashCode() ?? 0);
-                return hashCode;
-            }
-        }
+            => HashCode.Combine(Id, FirstName, LastName);
     }
 }

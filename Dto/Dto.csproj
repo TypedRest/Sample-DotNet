@@ -22,5 +22,8 @@
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
+  </ItemGroup>
 
 </Project>

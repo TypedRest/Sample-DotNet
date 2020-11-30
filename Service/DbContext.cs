@@ -5,7 +5,7 @@ namespace AddressBook
     /// <summary>
     /// Describes the service's database model.
     /// </summary>
-    public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext
+    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
         public DbContext(DbContextOptions options)
             : base(options)

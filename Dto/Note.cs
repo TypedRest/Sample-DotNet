@@ -24,6 +24,6 @@ namespace AddressBook
             => obj is Note other && Equals(other);
 
         public override int GetHashCode()
-            => Content?.GetHashCode() ?? 0;
+            => HashCode.Combine(Content);
     }
 }
