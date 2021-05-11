@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.14" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.15" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="Moq.AutoMock" Version="2.3.0" />
