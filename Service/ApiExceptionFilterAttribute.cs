@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Security.Authentication;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -20,13 +19,12 @@ namespace AddressBook
         private readonly bool _isDevelopment;
         private readonly ILogger<ApiExceptionFilterAttribute> _logger;
 
-        public ApiExceptionFilterAttribute(IWebHostEnvironment env, ILogger<ApiExceptionFilterAttribute> logger)
+        public ApiExceptionFilterAttribute(IHostEnvironment env, ILogger<ApiExceptionFilterAttribute> logger)
         {
             _isDevelopment = env.IsDevelopment();
             _logger = logger;
         }
 
-        /// <inheritdoc />
         public override void OnException(ExceptionContext context)
         {
             var (statusCode, logLevel) = GetStatusCodeAndLogLevel(context.Exception);
@@ -35,7 +33,7 @@ namespace AddressBook
             context.HttpContext.Response.StatusCode = (int)statusCode;
             context.Result = BuildResult(context.Exception, statusCode);
 
-            _logger.Log(logLevel, context.Exception, "Responded to HTTP {0} {1} with {2} due to exception.",
+            _logger.Log(logLevel, context.Exception, "Responded to HTTP {Method} {Url} with {Status} due to exception",
                 request.Method, request.GetEncodedPathAndQuery(), statusCode);
 
             base.OnException(context);

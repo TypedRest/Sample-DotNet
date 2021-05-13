@@ -34,7 +34,7 @@ namespace AddressBook
             var element = await ToDtos(_context.Contacts.Where(x => x.Id == id)).SingleOrDefaultAsync();
             if (element == null) throw new KeyNotFoundException($"Contact '{id}' not found.");
 
-            _logger.LogTrace("Read contact {0}", id);
+            _logger.LogTrace("Read contact {Id}", id);
             return element;
         }
 
@@ -49,7 +49,7 @@ namespace AddressBook
             await _context.Contacts.AddAsync(entity);
             await _context.SaveChangesAsync();
 
-            _logger.LogDebug("Created new contact {0}", entity.Id);
+            _logger.LogDebug("Created new contact {Id}", entity.Id);
             return new Contact {Id = entity.Id, FirstName = element.FirstName, LastName = element.LastName};
         }
 
@@ -63,7 +63,7 @@ namespace AddressBook
             _context.Update(entity);
             await _context.SaveChangesAsync();
 
-            _logger.LogDebug("Updated contact {0}", element.Id);
+            _logger.LogDebug("Updated contact {Id}", element.Id);
         }
 
         private static void FromDtoToEntity(Contact dto, ContactEntity entity)
@@ -80,7 +80,7 @@ namespace AddressBook
             _context.Contacts.Remove(entity);
             await _context.SaveChangesAsync();
 
-            _logger.LogDebug("Deleted contact {0}", id);
+            _logger.LogDebug("Deleted contact {Id}", id);
         }
 
         public async Task<Note> ReadNoteAsync(string id)
@@ -88,7 +88,7 @@ namespace AddressBook
             var note = await _context.Contacts.Where(x => x.Id == id).Select(x => new Note {Content = x.Note}).SingleOrDefaultAsync();
             if (note == null) throw new KeyNotFoundException($"Contact '{id}' not found.");
 
-            _logger.LogTrace("Read note for contact {0}", id);
+            _logger.LogTrace("Read note for contact {Id}", id);
             return note;
         }
 
@@ -102,7 +102,7 @@ namespace AddressBook
             _context.Update(entity);
             await _context.SaveChangesAsync();
 
-            _logger.LogDebug("Set note for contact {0}", id);
+            _logger.LogDebug("Set note for contact {Id}", id);
         }
 
         public async Task PokeAsync(string id)
@@ -113,7 +113,7 @@ namespace AddressBook
             entity.Pokes.Add(new PokeEntity {Timestamp = DateTime.UtcNow});
             await _context.SaveChangesAsync();
 
-            _logger.LogDebug("Poked contact {0}", id);
+            _logger.LogDebug("Poked contact {Id}", id);
         }
     }
 }
