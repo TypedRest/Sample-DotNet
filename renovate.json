@@ -1,28 +1,34 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":disableDependencyDashboard"],
   "packageRules": [
     {
-      "packagePatterns": ["Test", "Assert", "Mock", "[Xx]unit", "Moq"],
+      "matchPackagePatterns": ["Test", "Assert", "Mock", "[Xx]unit", "Moq"],
       "groupName": "Testing deps",
       "automerge": true,
       "automergeType": "branch"
     },
     {
-      "packagePatterns": ["^TypedRest"],
+      "matchPackagePatterns": ["^TypedRest"],
       "groupName": "TypedRest",
       "automerge": true,
       "automergeType": "branch"
     },
     {
-      "packagePatterns": ["^Microsoft\\.Extensions", "^Microsoft\\.AspNetCore", "^Microsoft\\.EntityFrameworkCore"],
+      "matchSourceUrlPrefixes": ["https://github.com/domaindrivendev/Swashbuckle.AspNetCore"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchPackagePatterns": ["^Microsoft\\.Extensions", "^Microsoft\\.AspNetCore", "^Microsoft\\.EntityFrameworkCore"],
       "groupName": "Microsoft Extensions",
+      "automerge": true,
+      "automergeType": "branch",
       "separateMinorPatch": true
     },
     {
-      "packagePatterns": ["^Microsoft\\.Extensions", "^Microsoft\\.AspNetCore", "^Microsoft\\.EntityFrameworkCore"],
-      "updateTypes": ["major", "minor"],
+      "matchPackagePatterns": ["^Microsoft\\.Extensions", "^Microsoft\\.AspNetCore", "^Microsoft\\.EntityFrameworkCore"],
+      "matchUpdateTypes": ["major", "minor"],
       "enabled": false
     }
   ]
