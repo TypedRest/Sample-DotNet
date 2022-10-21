@@ -1,39 +1,38 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace AddressBook
+namespace AddressBook;
+
+/// <summary>
+/// Instantiates a test <typeparamref name="TSubject"/>, injecting an in-memory database and mocks for its other dependencies.
+/// </summary>
+public class DatabaseFactsBase<TSubject> : AutoMockingFactsBase<TSubject>
+    where TSubject : class
 {
+    private readonly SqliteConnection _connection;
+
     /// <summary>
-    /// Instantiates a test <typeparamref name="TSubject"/>, injecting an in-memory database and mocks for its other dependencies.
+    /// An in-memory database that is reset after every test.
     /// </summary>
-    public class DatabaseFactsBase<TSubject> : AutoMockingFactsBase<TSubject>
-        where TSubject : class
+    protected readonly DbContext Context;
+
+    protected DatabaseFactsBase()
     {
-        private readonly SqliteConnection _connection;
+        _connection = new SqliteConnection("Data Source=:memory:");
+        _connection.Open();
 
-        /// <summary>
-        /// An in-memory database that is reset after every test.
-        /// </summary>
-        protected readonly DbContext Context;
+        Context = new DbContext(
+            new DbContextOptionsBuilder().UseSqlite(_connection).EnableSensitiveDataLogging().Options);
+        Context.Database.EnsureCreated();
 
-        protected DatabaseFactsBase()
-        {
-            _connection = new SqliteConnection("Data Source=:memory:");
-            _connection.Open();
+        Use(Context);
+    }
 
-            Context = new DbContext(
-                new DbContextOptionsBuilder().UseSqlite(_connection).EnableSensitiveDataLogging().Options);
-            Context.Database.EnsureCreated();
+    public override void Dispose()
+    {
+        Context.Dispose();
+        _connection.Dispose();
 
-            Use(Context);
-        }
-
-        public override void Dispose()
-        {
-            Context.Dispose();
-            _connection.Dispose();
-
-            base.Dispose();
-        }
+        base.Dispose();
     }
 }
