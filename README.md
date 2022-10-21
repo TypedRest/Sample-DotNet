@@ -7,4 +7,4 @@ The code is split into:
 - [Service/](Service/): an [ASP.NET Web API](https://dotnet.microsoft.com/apps/aspnet/apis) Service
 - [Client/](Client/): a TypedRest client library
 - [Dto/](Dto/): DTOs shared by the Client and the Service
-- [UnitTests/](UnitTests/): Tests that connect Client and Service (in-process using `Microsoft.AspNetCore.TestHost`)
+- [UnitTests/](UnitTests/): Tests that ensure the Client and Service work together
