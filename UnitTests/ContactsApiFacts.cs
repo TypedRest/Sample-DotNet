@@ -20,7 +20,7 @@ public class ContactsApiFacts : ApiFactsBase
         : base(output)
     {}
 
-    private readonly Mock<IContactsService> _serviceMock = new Mock<IContactsService>();
+    private readonly Mock<IContactsService> _serviceMock = new();
 
     protected override void ConfigureService(IServiceCollection services)
         => services.AddMock(_serviceMock);
@@ -30,8 +30,8 @@ public class ContactsApiFacts : ApiFactsBase
     {
         var contacts = new List<Contact>
         {
-            new Contact {Id = "1", FirstName = "John", LastName = "Smith"},
-            new Contact {Id = "2", FirstName = "Jane", LastName = "Doe"}
+            new() {Id = "1", FirstName = "John", LastName = "Smith"},
+            new() {Id = "2", FirstName = "Jane", LastName = "Doe"}
         };
         _serviceMock.Setup(x => x.ReadAllAsync()).ReturnsAsync(contacts);
 
