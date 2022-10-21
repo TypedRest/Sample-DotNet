@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>AddressBook.UnitTests</AssemblyName>
     <RootNamespace>AddressBook</RootNamespace>
-    <LangVersion>8</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>

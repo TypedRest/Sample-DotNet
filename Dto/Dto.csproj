@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>AddressBook.Dto</AssemblyName>
     <RootNamespace>AddressBook</RootNamespace>
-    <LangVersion>8</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
