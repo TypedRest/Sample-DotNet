@@ -4,6 +4,7 @@
     <AssemblyName>AddressBook</AssemblyName>
     <RootNamespace>AddressBook</RootNamespace>
     <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
@@ -37,5 +38,11 @@
     </ItemGroup>
     <Copy SourceFiles="@(DocFile)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="False" />
   </Target>
+
+  <!-- Global usings -->
+  <ItemGroup>
+    <Using Include="System.ComponentModel.DataAnnotations" />
+    <Using Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
 
 </Project>

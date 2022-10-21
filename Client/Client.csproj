@@ -4,6 +4,7 @@
     <AssemblyName>AddressBook.Client</AssemblyName>
     <RootNamespace>AddressBook</RootNamespace>
     <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>

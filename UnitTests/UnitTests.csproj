@@ -4,6 +4,7 @@
     <AssemblyName>AddressBook.UnitTests</AssemblyName>
     <RootNamespace>AddressBook</RootNamespace>
     <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
@@ -33,6 +34,14 @@
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <!-- Global usings -->
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Xunit.Abstractions" />
+    <Using Include="FluentAssertions" />
+    <Using Include="Moq" />
   </ItemGroup>
 
 </Project>

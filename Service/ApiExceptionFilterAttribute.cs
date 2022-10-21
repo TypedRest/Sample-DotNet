@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Security.Authentication;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace AddressBook;
 

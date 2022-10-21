@@ -1,5 +1,3 @@
-using System;
-using System.Net.Http;
 using TypedRest.Endpoints;
 using TypedRest.Endpoints.Generic;
 

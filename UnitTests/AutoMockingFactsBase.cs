@@ -1,6 +1,4 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using Moq.AutoMock;
 
 namespace AddressBook;
