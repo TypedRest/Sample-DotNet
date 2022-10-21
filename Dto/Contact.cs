@@ -27,12 +27,7 @@ public class Contact : IEquatable<Contact>
     public string LastName { get; set; }
 
     public bool Equals(Contact other)
-    {
-        if (other == null) return false;
-        return Id == other.Id
-               && FirstName == other.FirstName
-               && LastName == other.LastName;
-    }
+        => other != null && Id == other.Id && FirstName == other.FirstName && LastName == other.LastName;
 
     public override bool Equals(object obj)
         => obj is Contact other && Equals(other);

@@ -15,10 +15,7 @@ public class Note : IEquatable<Note>
     public string Content { get; set; }
 
     public bool Equals(Note other)
-    {
-        if (other == null) return false;
-        return Content == other.Content;
-    }
+        => other != null && Content == other.Content;
 
     public override bool Equals(object obj)
         => obj is Note other && Equals(other);
