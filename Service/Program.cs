@@ -10,7 +10,7 @@ public static class Program
     {
         var host = CreateHostBuilder(args).Build();
         using (var scope = host.Services.CreateScope())
-        using (var context = scope.ServiceProvider.GetService<DbContext>())
+        using (var context = scope.ServiceProvider.GetService<AddressBookDbContext>())
             context.Database.EnsureCreated();
         host.Run();
     }

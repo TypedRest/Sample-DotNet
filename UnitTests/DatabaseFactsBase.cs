@@ -14,14 +14,14 @@ public class DatabaseFactsBase<TSubject> : AutoMockingFactsBase<TSubject>
     /// <summary>
     /// An in-memory database that is reset after every test.
     /// </summary>
-    protected readonly DbContext Context;
+    protected readonly AddressBookDbContext Context;
 
     protected DatabaseFactsBase()
     {
         _connection = new SqliteConnection("Data Source=:memory:");
         _connection.Open();
 
-        Context = new DbContext(
+        Context = new AddressBookDbContext(
             new DbContextOptionsBuilder().UseSqlite(_connection).EnableSensitiveDataLogging().Options);
         Context.Database.EnsureCreated();
 

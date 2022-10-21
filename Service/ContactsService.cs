@@ -12,10 +12,10 @@ namespace AddressBook;
 /// </summary>
 public class ContactsService : IContactsService
 {
-    private readonly DbContext _context;
+    private readonly AddressBookDbContext _context;
     private readonly ILogger<ContactsService> _logger;
 
-    public ContactsService(DbContext context, ILogger<ContactsService> logger)
+    public ContactsService(AddressBookDbContext context, ILogger<ContactsService> logger)
     {
         _context = context;
         _logger = logger;

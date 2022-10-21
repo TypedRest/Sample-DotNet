@@ -20,7 +20,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
         => services
             .AddScoped<IContactsService, ContactsService>()
-            .AddDbContext<DbContext>(opts => opts.UseSqlite(_configuration.GetConnectionString("Database")))
+            .AddDbContext<AddressBookDbContext>(opts => opts.UseSqlite(_configuration.GetConnectionString("Database")))
             .AddRestApi();
 
     /// <summary>
