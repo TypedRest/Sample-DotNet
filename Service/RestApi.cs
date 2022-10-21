@@ -1,7 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 
@@ -16,8 +16,8 @@ public static class RestApi
         => services
             .AddSwaggerGen(opts =>
             {
-                opts.IncludeXmlComments(Path.Combine(ApplicationEnvironment.ApplicationBasePath, "AddressBook.xml"));
-                opts.IncludeXmlComments(Path.Combine(ApplicationEnvironment.ApplicationBasePath, "AddressBook.Dto.xml"));
+                opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "AddressBook.xml"));
+                opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "AddressBook.Dto.xml"));
             })
             .AddSwaggerGenNewtonsoftSupport()
             .Configure<MvcOptions>(opts => opts.Filters.Add(typeof(ApiExceptionFilterAttribute)))

@@ -1,24 +1,21 @@
-using Microsoft.AspNetCore.Hosting;
+using AddressBook;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
-namespace AddressBook;
+var builder = WebApplication.CreateBuilder(args);
 
-public static class Program
-{
-    public static void Main(string[] args)
-    {
-        var host = CreateHostBuilder(args).Build();
-        using (var scope = host.Services.CreateScope())
-        using (var context = scope.ServiceProvider.GetService<AddressBookDbContext>())
-            context.Database.EnsureCreated();
-        host.Run();
-    }
+builder.Services
+    .AddDbContext<AddressBookDbContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("Database")))
+    .AddScoped<IContactsService, ContactsService>()
+    .AddRestApi();
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
-}
+var app = builder.Build();
+app.UseRestApi();
+
+using (var scope = app.Services.CreateScope())
+using (var context = scope.ServiceProvider.GetRequiredService<AddressBookDbContext>())
+    context.Database.EnsureCreated();
+
+app.Run();

@@ -52,7 +52,7 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
         await Subject.UpdateAsync(new Contact {Id = entry.Entity.Id, FirstName = "Jane", LastName = "Doe"});
 
         var entity = await Context.Contacts.FindAsync(entry.Entity.Id);
-        entity.FirstName.Should().Be("Jane");
+        entity!.FirstName.Should().Be("Jane");
         entity.LastName.Should().Be("Doe");
     }
 
@@ -86,7 +86,7 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
         await Subject.SetNoteAsync(entry.Entity.Id, new Note {Content = "my note"});
 
         var contact = await Context.Contacts.FindAsync(entry.Entity.Id);
-        contact.Note.Should().Be("my note");
+        contact!.Note.Should().Be("my note");
     }
 
     [Fact]

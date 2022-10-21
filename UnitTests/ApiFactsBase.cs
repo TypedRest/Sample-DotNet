@@ -30,7 +30,7 @@ public abstract class ApiFactsBase : IDisposable
             .ConfigureLogging(builder => builder.AddXUnit(output))
             .ConfigureServices((context, services) => services
                 .AddRestApi()
-                .PartManager.ApplicationParts.Add(new AssemblyPart(typeof(Startup).Assembly)))
+                .PartManager.ApplicationParts.Add(new AssemblyPart(typeof(RestApi).Assembly)))
             .ConfigureServices(ConfigureService)
             .Configure(builder => builder
                 .UseRestApi()));
