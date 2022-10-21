@@ -18,9 +18,11 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
         await Context.SaveChangesAsync();
 
         var result = await Subject.ReadAllAsync();
-        result.Should().Equal(
+        result.Should().BeEquivalentTo(new[]
+        {
             new Contact {Id = entry1.Entity.Id, FirstName = "John", LastName = "Smith"},
-            new Contact {Id = entry2.Entity.Id, FirstName = "Jane", LastName = "Doe"});
+            new Contact {Id = entry2.Entity.Id, FirstName = "Jane", LastName = "Doe"}
+        });
     }
 
     [Fact]
