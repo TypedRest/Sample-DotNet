@@ -3,6 +3,6 @@
 /.vs/
 /.idea/
 /_ReSharper.*/
-/Service/*.db
+/Service/*.db*
 /*/obj/
 /*/bin/
