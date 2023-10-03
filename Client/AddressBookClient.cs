@@ -1,5 +1,6 @@
 using TypedRest.Endpoints;
 using TypedRest.Endpoints.Generic;
+using TypedRest.Serializers;
 
 namespace AddressBook;
 
@@ -13,7 +14,7 @@ public class AddressBookClient : EntryEndpoint, IAddressBookClient
     /// </summary>
     /// <param name="uri">The base URI of the Address Book API.</param>
     public AddressBookClient(Uri uri)
-        : base(uri)
+        : base(uri, serializer: new SystemTextJsonSerializer())
     {}
 
     /// <summary>
@@ -22,7 +23,7 @@ public class AddressBookClient : EntryEndpoint, IAddressBookClient
     /// <param name="httpClient">The HTTP client used to communicate with the remote element.</param>
     /// <param name="uri">The base URI of the Address Book API.</param>
     public AddressBookClient(HttpClient httpClient, Uri uri)
-        : base(httpClient, uri)
+        : base(httpClient, uri, serializer: new SystemTextJsonSerializer())
     {}
 
     /// <summary>

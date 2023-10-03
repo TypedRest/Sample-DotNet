@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Serialization;
 
 namespace AddressBook;
 
@@ -15,10 +14,8 @@ public static class RestApi
                 opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "AddressBook.xml"));
                 opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "AddressBook.Dto.xml"));
             })
-            .AddSwaggerGenNewtonsoftSupport()
             .Configure<MvcOptions>(opts => opts.Filters.Add(typeof(ApiExceptionFilterAttribute)))
-            .AddControllers()
-            .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+            .AddControllers();
 
     /// <summary>
     /// Registers endpoints for REST API controllers.
