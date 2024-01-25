@@ -3,7 +3,7 @@ using AddressBook;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddDbContext<AddressBookDbContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("Database")))
+    .AddDbContext<AddressBookDbContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("Database")!))
     .AddScoped<IContactsService, ContactsService>()
     .AddRestApi();
 
