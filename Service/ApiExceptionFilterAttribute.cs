@@ -9,16 +9,9 @@ namespace AddressBook;
 /// <summary>
 /// Reports exceptions with appropriate HTTP status codes.
 /// </summary>
-public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
+public class ApiExceptionFilterAttribute(IHostEnvironment env, ILogger<ApiExceptionFilterAttribute> logger) : ExceptionFilterAttribute
 {
-    private readonly bool _isDevelopment;
-    private readonly ILogger<ApiExceptionFilterAttribute> _logger;
-
-    public ApiExceptionFilterAttribute(IHostEnvironment env, ILogger<ApiExceptionFilterAttribute> logger)
-    {
-        _isDevelopment = env.IsDevelopment();
-        _logger = logger;
-    }
+    private readonly bool _isDevelopment = env.IsDevelopment();
 
     public override void OnException(ExceptionContext context)
     {
@@ -28,7 +21,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.HttpContext.Response.StatusCode = (int)statusCode;
         context.Result = BuildResult(context.Exception, statusCode);
 
-        _logger.Log(logLevel, context.Exception, "Responded to HTTP {Method} {Url} with {Status} due to exception",
+        logger.Log(logLevel, context.Exception, "Responded to HTTP {Method} {Url} with {Status} due to exception",
             request.Method, request.GetEncodedPathAndQuery(), statusCode);
 
         base.OnException(context);

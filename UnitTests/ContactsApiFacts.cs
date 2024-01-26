@@ -7,12 +7,8 @@ namespace AddressBook;
 /// <summary>
 /// Ensures <see cref="IAddressBookClient.Contacts"/> and <see cref="ContactsController"/> work together.
 /// </summary>
-public class ContactsApiFacts : ApiFactsBase
+public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
 {
-    public ContactsApiFacts(ITestOutputHelper output)
-        : base(output)
-    {}
-
     private readonly Mock<IContactsService> _serviceMock = new();
 
     protected override void ConfigureService(IServiceCollection services)

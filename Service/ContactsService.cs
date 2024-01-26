@@ -3,31 +3,22 @@ namespace AddressBook;
 /// <summary>
 /// Manages contacts in an address book.
 /// </summary>
-public class ContactsService : IContactsService
+public class ContactsService(AddressBookDbContext context, ILogger<ContactsService> logger) : IContactsService
 {
-    private readonly AddressBookDbContext _context;
-    private readonly ILogger<ContactsService> _logger;
-
-    public ContactsService(AddressBookDbContext context, ILogger<ContactsService> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
     public async Task<IEnumerable<Contact>> ReadAllAsync()
     {
-        var result = await ToDtos(_context.Contacts).ToListAsync();
+        var result = await ToDtos(context.Contacts).ToListAsync();
 
-        _logger.LogTrace("Read all contacts");
+        logger.LogTrace("Read all contacts");
         return result;
     }
 
     public async Task<Contact> ReadAsync(string id)
     {
-        var element = await ToDtos(_context.Contacts.Where(x => x.Id == id)).SingleOrDefaultAsync();
+        var element = await ToDtos(context.Contacts.Where(x => x.Id == id)).SingleOrDefaultAsync();
         if (element == null) throw new KeyNotFoundException($"Contact '{id}' not found.");
 
-        _logger.LogTrace("Read contact {Id}", id);
+        logger.LogTrace("Read contact {Id}", id);
         return element;
     }
 
@@ -39,24 +30,24 @@ public class ContactsService : IContactsService
         var entity = new ContactEntity();
         FromDtoToEntity(element, entity);
 
-        await _context.Contacts.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        await context.Contacts.AddAsync(entity);
+        await context.SaveChangesAsync();
 
-        _logger.LogDebug("Created new contact {Id}", entity.Id);
+        logger.LogDebug("Created new contact {Id}", entity.Id);
         return new Contact {Id = entity.Id, FirstName = element.FirstName, LastName = element.LastName};
     }
 
     public async Task UpdateAsync(Contact element)
     {
-        var entity = await _context.Contacts.FindAsync(element.Id);
+        var entity = await context.Contacts.FindAsync(element.Id);
         if (entity == null) throw new KeyNotFoundException($"Contact '{element.Id}' not found.");
 
         FromDtoToEntity(element, entity);
 
-        _context.Update(entity);
-        await _context.SaveChangesAsync();
+        context.Update(entity);
+        await context.SaveChangesAsync();
 
-        _logger.LogDebug("Updated contact {Id}", element.Id);
+        logger.LogDebug("Updated contact {Id}", element.Id);
     }
 
     private static void FromDtoToEntity(Contact dto, ContactEntity entity)
@@ -67,45 +58,45 @@ public class ContactsService : IContactsService
 
     public async Task DeleteAsync(string id)
     {
-        var entity = await _context.Contacts.FindAsync(id);
+        var entity = await context.Contacts.FindAsync(id);
         if (entity == null) throw new KeyNotFoundException($"Contact '{id}' not found.");
 
-        _context.Contacts.Remove(entity);
-        await _context.SaveChangesAsync();
+        context.Contacts.Remove(entity);
+        await context.SaveChangesAsync();
 
-        _logger.LogDebug("Deleted contact {Id}", id);
+        logger.LogDebug("Deleted contact {Id}", id);
     }
 
     public async Task<Note> ReadNoteAsync(string id)
     {
-        var note = await _context.Contacts.Where(x => x.Id == id).Select(x => new Note {Content = x.Note}).SingleOrDefaultAsync();
+        var note = await context.Contacts.Where(x => x.Id == id).Select(x => new Note {Content = x.Note}).SingleOrDefaultAsync();
         if (note == null) throw new KeyNotFoundException($"Contact '{id}' not found.");
 
-        _logger.LogTrace("Read note for contact {Id}", id);
+        logger.LogTrace("Read note for contact {Id}", id);
         return note;
     }
 
     public async Task SetNoteAsync(string id, Note note)
     {
-        var entity = await _context.Contacts.FindAsync(id);
+        var entity = await context.Contacts.FindAsync(id);
         if (entity == null) throw new KeyNotFoundException($"Contact '{id}' not found.");
 
         entity.Note = note.Content;
 
-        _context.Update(entity);
-        await _context.SaveChangesAsync();
+        context.Update(entity);
+        await context.SaveChangesAsync();
 
-        _logger.LogDebug("Set note for contact {Id}", id);
+        logger.LogDebug("Set note for contact {Id}", id);
     }
 
     public async Task PokeAsync(string id)
     {
-        var entity = await _context.Contacts.FindAsync(id);
+        var entity = await context.Contacts.FindAsync(id);
         if (entity == null) throw new KeyNotFoundException($"Contact '{id}' not found.");
 
         entity.Pokes.Add(new PokeEntity {Timestamp = DateTime.UtcNow});
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
-        _logger.LogDebug("Poked contact {Id}", id);
+        logger.LogDebug("Poked contact {Id}", id);
     }
 }

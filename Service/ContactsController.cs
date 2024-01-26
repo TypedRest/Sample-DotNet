@@ -7,22 +7,15 @@ namespace AddressBook;
 /// Provides access to contacts in an address book.
 /// </summary>
 [ApiController, Route("contacts")]
-public class ContactsController : Controller
+public class ContactsController(IContactsService service) : Controller
 {
-    private readonly IContactsService _service;
-
-    public ContactsController(IContactsService service)
-    {
-        _service = service;
-    }
-
     /// <summary>
     /// Returns all contacts.
     /// </summary>
     /// <response code="200">OK</response>
     [HttpGet("")]
     public async Task<IEnumerable<Contact>> ReadAll()
-        => await _service.ReadAllAsync();
+        => await service.ReadAllAsync();
 
     /// <summary>
     /// Returns a specific contact.
@@ -32,7 +25,7 @@ public class ContactsController : Controller
     /// <response code="404">Specified contact not found</response>
     [HttpGet("{id}")]
     public async Task<Contact> Read([FromRoute] string id)
-        => await _service.ReadAsync(id);
+        => await service.ReadAsync(id);
 
     /// <summary>
     /// Creates a new contact.
@@ -45,7 +38,7 @@ public class ContactsController : Controller
     [ProducesResponseType(201)]
     public async Task<ActionResult<Contact>> Create([FromBody] Contact contact)
     {
-        var result = await _service.CreateAsync(contact);
+        var result = await service.CreateAsync(contact);
 
         return CreatedAtAction(
             actionName: nameof(Read),
@@ -67,7 +60,7 @@ public class ContactsController : Controller
     {
         if (contact.Id != id) throw new InvalidDataException($"ID in URI ({id}) must match the ID in the body ({contact.Id}).");
 
-        await _service.UpdateAsync(contact);
+        await service.UpdateAsync(contact);
 
         return StatusCode((int)HttpStatusCode.NoContent);
     }
@@ -81,7 +74,7 @@ public class ContactsController : Controller
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
     public async Task Delete([FromRoute] string id)
-        => await _service.DeleteAsync(id);
+        => await service.DeleteAsync(id);
 
     /// <summary>
     /// Returns the note for a specific contact.
@@ -91,7 +84,7 @@ public class ContactsController : Controller
     /// <response code="404">Specified contact not found</response>
     [HttpGet("{id}/note")]
     public async Task<Note> ReadNote([FromRoute] string id)
-        => await _service.ReadNoteAsync(id);
+        => await service.ReadNoteAsync(id);
 
     /// <summary>
     /// Sets a note for a specific contact.
@@ -104,7 +97,7 @@ public class ContactsController : Controller
     [HttpPut("{id}/note")]
     public async Task<IActionResult> SetNote([FromRoute] string id, [FromBody] Note note)
     {
-        await _service.SetNoteAsync(id, note);
+        await service.SetNoteAsync(id, note);
 
         return StatusCode((int)HttpStatusCode.NoContent);
     }
@@ -119,7 +112,7 @@ public class ContactsController : Controller
     [ProducesResponseType(204)]
     public async Task<IActionResult> Poke([FromRoute] string id)
     {
-        await _service.PokeAsync(id);
+        await service.PokeAsync(id);
 
         return NoContent();
     }

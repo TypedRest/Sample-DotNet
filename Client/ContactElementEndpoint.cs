@@ -8,12 +8,9 @@ namespace AddressBook;
 /// <summary>
 /// Represents a REST endpoint for a single <see cref="Contact"/>.
 /// </summary>
-public class ContactElementEndpoint : ElementEndpoint<Contact>, IContactElementEndpoint
+public class ContactElementEndpoint(IEndpoint referrer, Uri relativeUri)
+    : ElementEndpoint<Contact>(referrer, relativeUri.EnsureTrailingSlash()), IContactElementEndpoint
 {
-    public ContactElementEndpoint(IEndpoint referrer, Uri relativeUri)
-        : base(referrer, relativeUri.EnsureTrailingSlash())
-    {}
-
     /// <summary>
     /// An optional note on the contact.
     /// </summary>
