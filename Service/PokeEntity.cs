@@ -28,6 +28,5 @@ public class PokeEntity
     /// <summary>
     /// When the poke was performed.
     /// </summary>
-    [Required]
-    public DateTime Timestamp { get; set; }
+    public required DateTime Timestamp { get; set; }
 }

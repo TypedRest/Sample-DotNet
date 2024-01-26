@@ -27,8 +27,11 @@ public class ContactsService(AddressBookDbContext context, ILogger<ContactsServi
 
     public async Task<Contact> CreateAsync(Contact element)
     {
-        var entity = new ContactEntity();
-        FromDtoToEntity(element, entity);
+        var entity = new ContactEntity
+        {
+            FirstName = element.FirstName,
+            LastName = element.LastName
+        };
 
         await context.Contacts.AddAsync(entity);
         await context.SaveChangesAsync();
@@ -42,18 +45,13 @@ public class ContactsService(AddressBookDbContext context, ILogger<ContactsServi
         var entity = await context.Contacts.FindAsync(element.Id);
         if (entity == null) throw new KeyNotFoundException($"Contact '{element.Id}' not found.");
 
-        FromDtoToEntity(element, entity);
+        entity.FirstName = element.FirstName;
+        entity.LastName = element.LastName;
 
         context.Update(entity);
         await context.SaveChangesAsync();
 
         logger.LogDebug("Updated contact {Id}", element.Id);
-    }
-
-    private static void FromDtoToEntity(Contact dto, ContactEntity entity)
-    {
-        entity.FirstName = dto.FirstName;
-        entity.LastName = dto.LastName;
     }
 
     public async Task DeleteAsync(string id)

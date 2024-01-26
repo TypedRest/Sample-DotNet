@@ -14,14 +14,12 @@ public class ContactEntity
     /// <summary>
     /// The first name of the contact.
     /// </summary>
-    [Required]
-    public string FirstName { get; set; } = default!;
+    public required string FirstName { get; set; }
 
     /// <summary>
     /// The last name of the contact.
     /// </summary>
-    [Required]
-    public string LastName { get; set; } = default!;
+    public required string LastName { get; set; }
 
     /// <summary>
     /// A note about a contact.
