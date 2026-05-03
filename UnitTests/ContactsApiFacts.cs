@@ -50,7 +50,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
         var result = await Client.Contacts.CreateAsync(contactWithoutId);
 
         result.Should().NotBeNull();
-        result!.Uri.Should().Be("http://localhost/contacts/1/");
+        result.Uri.Should().Be("http://localhost/contacts/1");
     }
 
     [Fact]
