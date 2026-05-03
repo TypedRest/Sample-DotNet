@@ -6,8 +6,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          show-progress: false
       - run: dotnet build
       - run: dotnet test --no-build UnitTests/UnitTests.csproj
