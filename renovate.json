@@ -9,10 +9,6 @@
       "automergeType": "branch"
     },
     {
-      "matchPackageNames": ["FluentAssertions"],
-      "allowedVersions": "<8"
-    },
-    {
       "matchPackagePatterns": ["^TypedRest"],
       "groupName": "TypedRest",
       "automerge": true,
