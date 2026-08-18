@@ -8,9 +8,9 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
     [Fact]
     public async Task ReadsAllFromDatabase()
     {
-        var entry1 = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"});
-        var entry2 = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "Jane", LastName = "Doe"});
-        await Context.SaveChangesAsync();
+        var entry1 = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"}, TestContext.Current.CancellationToken);
+        var entry2 = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "Jane", LastName = "Doe"}, TestContext.Current.CancellationToken);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var result = await Subject.ReadAllAsync();
         result.Should().BeEquivalentTo(new[]
@@ -23,8 +23,8 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
     [Fact]
     public async Task ReadsFromDatabase()
     {
-        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"});
-        await Context.SaveChangesAsync();
+        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"}, TestContext.Current.CancellationToken);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var result = await Subject.ReadAsync(entry.Entity.Id);
         result.Should().Be(new Contact {Id = entry.Entity.Id, FirstName = "John", LastName = "Smith"});
@@ -41,12 +41,12 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
     [Fact]
     public async Task UpdatesInDatabase()
     {
-        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"});
-        await Context.SaveChangesAsync();
+        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"}, TestContext.Current.CancellationToken);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         await Subject.UpdateAsync(new Contact {Id = entry.Entity.Id, FirstName = "Jane", LastName = "Doe"});
 
-        var entity = await Context.Contacts.FindAsync(entry.Entity.Id);
+        var entity = await Context.Contacts.FindAsync([entry.Entity.Id], TestContext.Current.CancellationToken);
         entity!.FirstName.Should().Be("Jane");
         entity.LastName.Should().Be("Doe");
     }
@@ -54,8 +54,8 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
     [Fact]
     public async Task DeletesFromDatabase()
     {
-        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"});
-        await Context.SaveChangesAsync();
+        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"}, TestContext.Current.CancellationToken);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         await Subject.DeleteAsync(entry.Entity.Id);
 
@@ -65,8 +65,8 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
     [Fact]
     public async Task ReadsNoteFromDatabase()
     {
-        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith", Note = "my note"});
-        await Context.SaveChangesAsync();
+        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith", Note = "my note"}, TestContext.Current.CancellationToken);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var note = await Subject.ReadNoteAsync(entry.Entity.Id);
         note.Should().Be(new Note {Content = "my note"});
@@ -75,20 +75,20 @@ public class ContactsServiceFacts : DatabaseFactsBase<ContactsService>
     [Fact]
     public async Task WritesNoteInDatabase()
     {
-        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"});
-        await Context.SaveChangesAsync();
+        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"}, TestContext.Current.CancellationToken);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         await Subject.SetNoteAsync(entry.Entity.Id, new Note {Content = "my note"});
 
-        var contact = await Context.Contacts.FindAsync(entry.Entity.Id);
+        var contact = await Context.Contacts.FindAsync([entry.Entity.Id], TestContext.Current.CancellationToken);
         contact!.Note.Should().Be("my note");
     }
 
     [Fact]
     public async Task StoresPokeInDatabase()
     {
-        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"});
-        await Context.SaveChangesAsync();
+        var entry = await Context.Contacts.AddAsync(new ContactEntity {FirstName = "John", LastName = "Smith"}, TestContext.Current.CancellationToken);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         await Subject.PokeAsync(entry.Entity.Id);
 

@@ -24,7 +24,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
         };
         _serviceMock.Setup(x => x.ReadAllAsync()).ReturnsAsync(contacts);
 
-        var result = await Client.Contacts.ReadAllAsync();
+        var result = await Client.Contacts.ReadAllAsync(cancellationToken: TestContext.Current.CancellationToken);
 
         result.Should().Equal(contacts);
     }
@@ -35,7 +35,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
         var contact = new Contact {Id = "1", FirstName = "John", LastName = "Smith"};
         _serviceMock.Setup(x => x.ReadAsync("1")).ReturnsAsync(contact);
 
-        var result = await Client.Contacts["1"].ReadAsync();
+        var result = await Client.Contacts["1"].ReadAsync(TestContext.Current.CancellationToken);
 
         result.Should().Be(contact);
     }
@@ -47,7 +47,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
         var contactWithId = new Contact {Id = "1", FirstName = "John", LastName = "Smith"};
         _serviceMock.Setup(x => x.CreateAsync(contactWithoutId)).ReturnsAsync(contactWithId);
 
-        var result = await Client.Contacts.CreateAsync(contactWithoutId);
+        var result = await Client.Contacts.CreateAsync(contactWithoutId, TestContext.Current.CancellationToken);
 
         result.Should().NotBeNull();
         result.Uri.Should().Be("http://localhost/contacts/1");
@@ -65,7 +65,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
     {
         var contact = new Contact {Id = "1", FirstName = "John", LastName = "Smith"};
 
-        await Client.Contacts.SetAsync(contact);
+        await Client.Contacts.SetAsync(contact, TestContext.Current.CancellationToken);
 
         _serviceMock.Verify(x => x.UpdateAsync(contact));
     }
@@ -82,7 +82,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
     [Fact]
     public async Task DeletesFromService()
     {
-        await Client.Contacts["1"].DeleteAsync();
+        await Client.Contacts["1"].DeleteAsync(TestContext.Current.CancellationToken);
 
         _serviceMock.Verify(x => x.DeleteAsync("1"));
     }
@@ -93,7 +93,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
         var note = new Note {Content = "my note"};
         _serviceMock.Setup(x => x.ReadNoteAsync("1")).ReturnsAsync(note);
 
-        var result = await Client.Contacts["1"].Note.ReadAsync();
+        var result = await Client.Contacts["1"].Note.ReadAsync(TestContext.Current.CancellationToken);
 
         result.Should().Be(note);
     }
@@ -103,7 +103,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
     {
         var note = new Note {Content = "my note"};
 
-        await Client.Contacts["1"].Note.SetAsync(note);
+        await Client.Contacts["1"].Note.SetAsync(note, TestContext.Current.CancellationToken);
 
         _serviceMock.Verify(x => x.SetNoteAsync("1", note));
     }
@@ -111,7 +111,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
     [Fact]
     public async Task PokesViaService()
     {
-        await Client.Contacts["1"].Poke.InvokeAsync();
+        await Client.Contacts["1"].Poke.InvokeAsync(TestContext.Current.CancellationToken);
 
         _serviceMock.Verify(x => x.PokeAsync("1"));
     }
