@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TypedRest.SystemTextJson" Version="1.7.2" />
+    <PackageReference Include="TypedRest.SystemTextJson" Version="1.7.3" />
   </ItemGroup>
 
   <ItemGroup>
