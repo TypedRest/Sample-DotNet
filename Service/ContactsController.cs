@@ -6,7 +6,7 @@ namespace AddressBook;
 /// <summary>
 /// Provides access to contacts in an address book.
 /// </summary>
-[ApiController, Route("contacts")]
+[ApiController, Route("contacts"), Produces("application/json"), Consumes("application/json")]
 public class ContactsController(IContactsService service) : Controller
 {
     /// <summary>

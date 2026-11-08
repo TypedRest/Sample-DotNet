@@ -15,7 +15,7 @@
       "automergeType": "branch"
     },
     {
-      "matchSourceUrlPrefixes": ["https://github.com/domaindrivendev/Swashbuckle.AspNetCore"],
+      "matchPackageNames": ["Scalar.AspNetCore"],
       "automerge": true,
       "automergeType": "branch"
     },
