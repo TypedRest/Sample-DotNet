@@ -4,7 +4,13 @@ This is a sample project for using [TypedRest for .NET](https://github.com/Typed
 
 The code is split into:
 
-- [Service/](Service/): an [ASP.NET Web API](https://dotnet.microsoft.com/apps/aspnet/apis) Service
+- [Service/](Service/): an [ASP.NET Core Web API](https://dotnet.microsoft.com/apps/aspnet/apis) Service
 - [Client/](Client/): a TypedRest client library
 - [Dto/](Dto/): DTOs shared by the Client and the Service
 - [UnitTests/](UnitTests/): Tests that ensure the Client and Service work together
+
+## OpenAPI
+
+The Service describes itself with an [OpenAPI](https://www.openapis.org/) document, served at `/openapi/v1.json` together with an interactive API reference at `/scalar`.
+
+The same document is also written to [Service/AddressBook.json](Service/AddressBook.json) on every build, so changes to the API show up in diffs.
