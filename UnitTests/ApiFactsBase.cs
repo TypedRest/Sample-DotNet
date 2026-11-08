@@ -20,6 +20,7 @@ public abstract class ApiFactsBase : IDisposable
         _host = CreateHostBuilder(output).Start();
         _server = _host.GetTestServer();
         Client = new AddressBookClient(_server.CreateClient(), new Uri("http://localhost"));
+        GeneratedClient = new Generated.AddressBookClient(_server.CreateClient(), new Uri("http://localhost"));
     }
 
     private IHostBuilder CreateHostBuilder(ITestOutputHelper output)
@@ -39,9 +40,14 @@ public abstract class ApiFactsBase : IDisposable
     protected abstract void ConfigureService(IServiceCollection services);
 
     /// <summary>
-    /// A message handler configured for in-memory communication with ASP.NET MVC controllers.
+    /// The handwritten client, configured for in-memory communication with ASP.NET MVC controllers.
     /// </summary>
     protected readonly IAddressBookClient Client;
+
+    /// <summary>
+    /// The client generated from the OpenAPI document, configured for in-memory communication with ASP.NET MVC controllers.
+    /// </summary>
+    protected readonly Generated.IAddressBookClient GeneratedClient;
 
     public virtual void Dispose()
     {

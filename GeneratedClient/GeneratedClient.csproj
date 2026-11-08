@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AddressBook.GeneratedClient</AssemblyName>
+    <RootNamespace>AddressBook.Generated</RootNamespace>
+    <LangVersion>14.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PublishRepositoryUrl>True</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Address Book Client (generated)</Title>
+    <Description>Client library for the Address Book REST API, generated from its OpenAPI document</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TypedRest.SourceGenerator" Version="0.5.0" PrivateAssets="all" />
+    <PackageReference Include="TypedRest.SystemTextJson" Version="1.7.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Build the Service first so the OpenAPI document is up to date (no assembly reference) -->
+    <ProjectReference Include="..\Service\Service.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Generate the client from the OpenAPI document the Service writes on build -->
+    <TypedRestOpenApi Include="..\Service\AddressBook.json" ServiceName="AddressBook" Serializer="system-text-json" />
+  </ItemGroup>
+
+</Project>
