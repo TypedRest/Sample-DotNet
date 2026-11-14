@@ -27,6 +27,13 @@ public class ContactEntity
     public string? Note { get; set; }
 
     /// <summary>
+    /// Changes whenever the contact (including its <see cref="Note"/>) is modified. Used for optimistic concurrency and caching.
+    /// </summary>
+    /// <remarks>Assigned automatically by <see cref="AddressBookDbContext"/> on every save that modifies the contact.</remarks>
+    [ConcurrencyCheck]
+    public Guid Version { get; set; } = Guid.NewGuid();
+
+    /// <summary>
     /// A list of pokes performed on this contact.
     /// </summary>
     public ICollection<PokeEntity> Pokes { get; set; } = new List<PokeEntity>();

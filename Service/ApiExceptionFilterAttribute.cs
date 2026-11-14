@@ -34,6 +34,7 @@ public class ApiExceptionFilterAttribute(IHostEnvironment env, ILogger<ApiExcept
             UnauthorizedAccessException _ => (HttpStatusCode.Forbidden, LogLevel.Debug),
             InvalidDataException _ => (HttpStatusCode.BadRequest, LogLevel.Information),
             KeyNotFoundException _ => (HttpStatusCode.NotFound, LogLevel.Information),
+            DbUpdateConcurrencyException _ => (HttpStatusCode.PreconditionFailed, LogLevel.Information),
             InvalidOperationException _ => (HttpStatusCode.Conflict, LogLevel.Warning),
             TimeoutException _ => (HttpStatusCode.RequestTimeout, LogLevel.Warning),
             _ => (HttpStatusCode.InternalServerError, LogLevel.Error)

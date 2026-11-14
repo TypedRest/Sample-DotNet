@@ -36,7 +36,7 @@ public class GeneratedContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(
     public async Task ReadsFromService()
     {
         var contact = new Contact {Id = "1", FirstName = "John", LastName = "Smith"};
-        _serviceMock.Setup(x => x.ReadAsync("1")).ReturnsAsync(contact);
+        _serviceMock.Setup(x => x.ReadAsync("1")).ReturnsAsync(new Versioned<Contact>(contact, Guid.NewGuid()));
 
         var result = await GeneratedClient.Contacts["1"].ReadAsync(TestContext.Current.CancellationToken);
 
@@ -72,7 +72,7 @@ public class GeneratedContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(
             new Generated.Contact {Id = "1", FirstName = "John", LastName = "Smith"},
             TestContext.Current.CancellationToken);
 
-        _serviceMock.Verify(x => x.UpdateAsync(new Contact {Id = "1", FirstName = "John", LastName = "Smith"}));
+        _serviceMock.Verify(x => x.UpdateAsync(new Contact {Id = "1", FirstName = "John", LastName = "Smith"}, null));
     }
 
     [Fact]
@@ -89,14 +89,14 @@ public class GeneratedContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(
     {
         await GeneratedClient.Contacts["1"].DeleteAsync(TestContext.Current.CancellationToken);
 
-        _serviceMock.Verify(x => x.DeleteAsync("1"));
+        _serviceMock.Verify(x => x.DeleteAsync("1", null));
     }
 
     [Fact]
     public async Task ReadsNoteFromService()
     {
         var note = new Note {Content = "my note"};
-        _serviceMock.Setup(x => x.ReadNoteAsync("1")).ReturnsAsync(note);
+        _serviceMock.Setup(x => x.ReadNoteAsync("1")).ReturnsAsync(new Versioned<Note>(note, Guid.NewGuid()));
 
         var result = await GeneratedClient.Contacts["1"].Note.ReadAsync(TestContext.Current.CancellationToken);
 
@@ -110,7 +110,7 @@ public class GeneratedContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(
             new Generated.Note {Content = "my note"},
             TestContext.Current.CancellationToken);
 
-        _serviceMock.Verify(x => x.SetNoteAsync("1", new Note {Content = "my note"}));
+        _serviceMock.Verify(x => x.SetNoteAsync("1", new Note {Content = "my note"}, null));
     }
 
     [Fact]

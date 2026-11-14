@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MorseCode.ITask;
 using TypedRest.Endpoints.Generic;
@@ -33,7 +34,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
     public async Task ReadsFromService()
     {
         var contact = new Contact {Id = "1", FirstName = "John", LastName = "Smith"};
-        _serviceMock.Setup(x => x.ReadAsync("1")).ReturnsAsync(contact);
+        _serviceMock.Setup(x => x.ReadAsync("1")).ReturnsAsync(new Versioned<Contact>(contact, Guid.NewGuid()));
 
         var result = await Client.Contacts["1"].ReadAsync(TestContext.Current.CancellationToken);
 
@@ -67,7 +68,35 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
 
         await Client.Contacts.SetAsync(contact, TestContext.Current.CancellationToken);
 
-        _serviceMock.Verify(x => x.UpdateAsync(contact));
+        _serviceMock.Verify(x => x.UpdateAsync(contact, null));
+    }
+
+    [Fact]
+    public async Task UpdatesWithVersionFromPreviousRead()
+    {
+        var contact = new Contact {Id = "1", FirstName = "John", LastName = "Smith"};
+        var version = Guid.NewGuid();
+        _serviceMock.Setup(x => x.ReadAsync("1")).ReturnsAsync(new Versioned<Contact>(contact, version));
+        var endpoint = Client.Contacts["1"];
+
+        await endpoint.ReadAsync(TestContext.Current.CancellationToken);
+        await endpoint.SetAsync(contact, TestContext.Current.CancellationToken);
+
+        _serviceMock.Verify(x => x.UpdateAsync(contact, It.Is<IReadOnlyCollection<Guid>>(v => v.SequenceEqual(new[] {version}))));
+    }
+
+    [Fact]
+    public async Task RejectsUpdateOnVersionMismatch()
+    {
+        var contact = new Contact {Id = "1", FirstName = "John", LastName = "Smith"};
+        _serviceMock.Setup(x => x.ReadAsync("1")).ReturnsAsync(new Versioned<Contact>(contact, Guid.NewGuid()));
+        _serviceMock.Setup(x => x.UpdateAsync(contact, It.IsNotNull<IReadOnlyCollection<Guid>>()))
+                    .ThrowsAsync(new DbUpdateConcurrencyException("Modified"));
+        var endpoint = Client.Contacts["1"];
+
+        await endpoint.ReadAsync(TestContext.Current.CancellationToken);
+        await endpoint.Awaiting(x => x.SetAsync(contact))
+            .Should().ThrowAsync<InvalidOperationException>();
     }
 
     [Fact]
@@ -84,14 +113,14 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
     {
         await Client.Contacts["1"].DeleteAsync(TestContext.Current.CancellationToken);
 
-        _serviceMock.Verify(x => x.DeleteAsync("1"));
+        _serviceMock.Verify(x => x.DeleteAsync("1", null));
     }
 
     [Fact]
     public async Task ReadsNoteFromService()
     {
         var note = new Note {Content = "my note"};
-        _serviceMock.Setup(x => x.ReadNoteAsync("1")).ReturnsAsync(note);
+        _serviceMock.Setup(x => x.ReadNoteAsync("1")).ReturnsAsync(new Versioned<Note>(note, Guid.NewGuid()));
 
         var result = await Client.Contacts["1"].Note.ReadAsync(TestContext.Current.CancellationToken);
 
@@ -105,7 +134,7 @@ public class ContactsApiFacts(ITestOutputHelper output) : ApiFactsBase(output)
 
         await Client.Contacts["1"].Note.SetAsync(note, TestContext.Current.CancellationToken);
 
-        _serviceMock.Verify(x => x.SetNoteAsync("1", note));
+        _serviceMock.Verify(x => x.SetNoteAsync("1", note, null));
     }
 
     [Fact]
