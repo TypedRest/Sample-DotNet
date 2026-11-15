@@ -1,0 +1,39 @@
+@inherits EndpointComponent<ICollectionEndpoint<Contact, ContactElementEndpoint>>
+
+@* Lists all contacts and lets the user add new ones. *@
+
+<form @onsubmit="AddAsync">
+    <input @bind="_firstName" placeholder="First name" aria-label="First name" required>
+    <input @bind="_lastName" placeholder="Last name" aria-label="Last name" required>
+    <button type="submit">Add contact</button>
+</form>
+
+<ul id="contacts">
+    @foreach (var contact in _contacts)
+    {
+        @* Keying by ID keeps the components (and their endpoints) of contacts that are still there *@
+        <ContactItem @key="contact.Id" Endpoint="Endpoint[contact]" Contact="contact" OnDeleted="RefreshAsync" />
+    }
+</ul>
+
+@code {
+    private List<Contact> _contacts = [];
+    private string _firstName = "", _lastName = "";
+
+    protected override Task OnInitializedAsync()
+        => RunAsync(RefreshAsync);
+
+    private async Task RefreshAsync()
+        => _contacts = await Endpoint.ReadAllAsync(CancellationToken);
+
+    private Task AddAsync()
+    {
+        var contact = new Contact { FirstName = _firstName, LastName = _lastName };
+        return RunAsync(async () =>
+        {
+            await Endpoint.CreateAsync(contact, CancellationToken);
+            _firstName = _lastName = "";
+            await RefreshAsync();
+        }, $"Added {contact.FirstName} {contact.LastName}.");
+    }
+}

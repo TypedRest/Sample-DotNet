@@ -1,0 +1,17 @@
+@inject IAddressBookClient Client
+
+@*
+    The Address Book page.
+
+    The component tree mirrors the endpoint tree:
+    each component gets the endpoint it works with as a parameter and keeps that endpoint for its whole lifetime (see EndpointComponent).
+*@
+
+<header>
+    <h1>Address Book</h1>
+    <p>A TypedRest client running in the browser with Blazor WebAssembly. <a href="scalar">API reference</a></p>
+</header>
+
+<StatusProvider>
+    <ContactList Endpoint="Client.Contacts" />
+</StatusProvider>

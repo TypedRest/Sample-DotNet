@@ -27,13 +27,19 @@ public static class RestApi
     /// <summary>
     /// Registers endpoints for REST API controllers, the OpenAPI document and the API reference UI.
     /// </summary>
+    public static IEndpointRouteBuilder MapRestApi(this IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapControllers();
+        endpoints.MapOpenApi();
+        endpoints.MapScalarApiReference(opts => opts.WithTitle("Address Book"));
+        return endpoints;
+    }
+
+    /// <summary>
+    /// Adds routing middleware with endpoints for REST API controllers, the OpenAPI document and the API reference UI.
+    /// </summary>
     public static IApplicationBuilder UseRestApi(this IApplicationBuilder app)
         => app
             .UseRouting()
-            .UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapOpenApi();
-                endpoints.MapScalarApiReference(opts => opts.WithTitle("Address Book"));
-            });
+            .UseEndpoints(endpoints => endpoints.MapRestApi());
 }

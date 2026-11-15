@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <AssemblyName>AddressBook.Web</AssemblyName>
+    <RootNamespace>AddressBook.Web</RootNamespace>
+    <LangVersion>14.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>False</IsPackable>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <OverrideHtmlAssetPlaceholders>True</OverrideHtmlAssetPlaceholders>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Address Book Web</Title>
+    <Description>Web page that uses the Address Book client in the browser.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\Client.csproj" />
+  </ItemGroup>
+
+</Project>

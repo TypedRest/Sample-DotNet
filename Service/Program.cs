@@ -9,7 +9,12 @@ builder.Services
     .AddRestApi();
 
 var app = builder.Build();
-app.UseRestApi();
+
+if (app.Environment.IsDevelopment()) app.UseWebAssemblyDebugging();
+app.UseDefaultFiles(); // Rewrites / to /index.html, so must come before routing
+app.UseRouting();
+app.MapRestApi();
+app.MapStaticAssets(); // Serves the Blazor WebAssembly page from Web/
 
 // Skip database setup when the build launches the app only to extract the OpenAPI document
 if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")

@@ -1,0 +1,21 @@
+@inherits EndpointComponent<IElementEndpoint<Note>>
+
+@* Edits the note on a contact. *@
+
+<input placeholder="Add a note" aria-label="Note for @Name" @bind="_content" @bind:after="SaveAsync">
+
+@code {
+    // Reads and saves go through the same endpoint object (see EndpointComponent), so TypedRest can send the ETag it got from the read:
+    // If-None-Match when reading again, If-Match on the first save after a read to detect lost updates.
+
+    [Parameter, EditorRequired]
+    public string Name { get; set; } = null!;
+
+    private string? _content;
+
+    protected override Task OnInitializedAsync()
+        => RunAsync(async () => _content = (await Endpoint.ReadAsync(CancellationToken)).Content);
+
+    private Task SaveAsync()
+        => RunAsync(() => Endpoint.SetAsync(new Note { Content = _content ?? "" }, CancellationToken), $"Saved note for {Name}.");
+}

@@ -1,0 +1,109 @@
+:root {
+    color-scheme: light dark;
+    --bg: light-dark(#fafafa, #161618);
+    --fg: light-dark(#1d1d1f, #f2f2f4);
+    --muted: light-dark(#6e6e73, #a1a1a6);
+    --border: light-dark(#d2d2d7, #3a3a3e);
+    --accent: light-dark(#0a66c2, #5aa2f0);
+    --danger: light-dark(#c62828, #ef6a6a);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+}
+
+main {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+h1 {
+    margin: 0;
+}
+
+header p, .loading {
+    margin-top: 0.25rem;
+    color: var(--muted);
+}
+
+a {
+    color: var(--accent);
+}
+
+form, li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+form {
+    margin: 1.5rem 0;
+}
+
+input {
+    flex: 1 1 10rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+}
+
+button {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+button.danger {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--border);
+}
+
+.name {
+    flex: 0 0 12rem;
+    font-weight: 600;
+}
+
+#contacts:empty::after {
+    content: "No contacts yet.";
+    color: var(--muted);
+}
+
+#status {
+    display: block;
+    min-height: 1.5em;
+    margin-top: 1rem;
+    color: var(--muted);
+}
+
+#status.error {
+    color: var(--danger);
+}

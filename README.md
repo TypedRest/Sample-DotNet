@@ -8,7 +8,24 @@ The code is split into:
 - [Client/](Client/): a handwritten TypedRest client library
 - [GeneratedClient/](GeneratedClient/): a TypedRest client library generated from the Service's OpenAPI document
 - [Dto/](Dto/): DTOs shared by the Client and the Service
+- [Web/](Web/): a web page that uses the handwritten Client in the browser, built with [Blazor WebAssembly](https://learn.microsoft.com/aspnet/core/blazor/)
 - [UnitTests/](UnitTests/): Tests that ensure both clients and the Service work together
+
+## Running
+
+Run the Service, which also serves the web page:
+
+```sh
+dotnet run --project Service
+```
+
+The web page is then available at <http://localhost:5000/> and the API reference at <http://localhost:5000/scalar>.
+
+## Components and endpoints
+
+The web page's component tree mirrors the client's endpoint tree: [`ContactList`](Web/ContactList.razor) works with the contacts collection, each [`ContactItem`](Web/ContactItem.razor) with one contact and each [`ContactNote`](Web/ContactNote.razor) with that contact's note.
+
+Each component keeps the endpoint it was first rendered with for as long as it exists, even when its parent re-renders and passes a new endpoint object for the same resource (see [`EndpointComponent`](Web/EndpointComponent.cs)). This matters because TypedRest stores ETags on the endpoint object: reading again sends `If-None-Match`, and saving sends `If-Match` so the Service can reject lost updates. Each component also passes a `CancellationToken` to its reads, which cancels requests that are still running when the component is removed.
 
 ## OpenAPI
 

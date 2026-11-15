@@ -1,0 +1,33 @@
+@inherits EndpointComponent<ContactElementEndpoint>
+
+@* Shows a single contact, with its note and actions. *@
+
+<li>
+    <span class="name">@Name</span>
+    <ContactNote Endpoint="Endpoint.Note" Name="@Name" />
+    <button type="button" @onclick="PokeAsync">Poke</button>
+    <button type="button" class="danger" @onclick="DeleteAsync">Delete</button>
+</li>
+
+@code {
+    [Parameter, EditorRequired]
+    public Contact Contact { get; set; } = null!;
+
+    /// <summary>
+    /// Called after the contact was deleted.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnDeleted { get; set; }
+
+    private string Name => $"{Contact.FirstName} {Contact.LastName}";
+
+    private Task PokeAsync()
+        => RunAsync(() => Endpoint.Poke.InvokeAsync(CancellationToken), $"Poked {Name}.");
+
+    private Task DeleteAsync()
+        => RunAsync(async () =>
+        {
+            await Endpoint.DeleteAsync(CancellationToken);
+            await OnDeleted.InvokeAsync();
+        }, $"Deleted {Name}.");
+}

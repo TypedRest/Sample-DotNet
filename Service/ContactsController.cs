@@ -7,7 +7,7 @@ namespace AddressBook;
 /// <summary>
 /// Provides access to contacts in an address book.
 /// </summary>
-[ApiController, Route("contacts"), Produces("application/json"), Consumes("application/json")]
+[ApiController, Route("contacts"), Produces("application/json")]
 public class ContactsController(IContactsService service) : Controller
 {
     /// <summary>
@@ -36,7 +36,7 @@ public class ContactsController(IContactsService service) : Controller
     /// <returns>The contact that was created (with the ID).</returns>
     /// <response code="201">Created</response>
     /// <response code="400">Missing or invalid request body</response>
-    [HttpPost("")]
+    [HttpPost(""), Consumes("application/json")]
     [ProducesResponseType(201)]
     public async Task<ActionResult<Contact>> Create([FromBody] Contact contact)
     {
@@ -57,7 +57,7 @@ public class ContactsController(IContactsService service) : Controller
     /// <response code="400">Missing or invalid request body</response>
     /// <response code="404">Specified contact not found</response>
     /// <response code="412">Contact was modified since the version specified by If-Match</response>
-    [HttpPut("{id}")]
+    [HttpPut("{id}"), Consumes("application/json")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Set([FromRoute] string id, [FromBody] Contact contact)
     {
@@ -100,7 +100,7 @@ public class ContactsController(IContactsService service) : Controller
     /// <response code="400">Missing or invalid request body</response>
     /// <response code="404">Specified contact not found</response>
     /// <response code="412">Contact was modified since the version specified by If-Match</response>
-    [HttpPut("{id}/note")]
+    [HttpPut("{id}/note"), Consumes("application/json")]
     public async Task<IActionResult> SetNote([FromRoute] string id, [FromBody] Note note)
     {
         await service.SetNoteAsync(id, note, GetExpectedVersions());

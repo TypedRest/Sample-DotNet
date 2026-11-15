@@ -1,0 +1,42 @@
+@* Shows a status line below its children, which they can report to via RunAsync(). *@
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+<output id="status" role="status" class="@(_isError ? "error" : null)">@_message</output>
+
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string? _message;
+    private bool _isError;
+
+    /// <summary>
+    /// Runs an API call and reports the outcome in the status line.
+    /// </summary>
+    /// <param name="action">The API call to run.</param>
+    /// <param name="successMessage">Shown when the call succeeds. Leave unset for background reads that should not replace the current status.</param>
+    /// <param name="cancellationToken">The token passed to the API call.</param>
+    public async Task RunAsync(Func<Task> action, string? successMessage = null, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await action();
+            if (successMessage == null) return;
+            _message = successMessage;
+            _isError = false;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            // Requests cancelled because their component was removed are not errors
+            return;
+        }
+        catch (Exception ex)
+        {
+            _message = ex.Message;
+            _isError = true;
+        }
+        StateHasChanged();
+    }
+}

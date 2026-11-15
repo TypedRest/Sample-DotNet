@@ -20,6 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.15" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.21.0" />
@@ -27,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dto\Dto.csproj" />
+    <ProjectReference Include="..\Web\Web.csproj" />
   </ItemGroup>
 
   <!-- Write the OpenAPI document to Service/AddressBook.json on every build -->
