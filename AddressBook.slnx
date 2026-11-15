@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Client.Generated/Client.Generated.csproj" />
+  <Project Path="Client/Client.csproj" />
+  <Project Path="Dto/Dto.csproj" />
+  <Project Path="Service/Service.csproj" />
+  <Project Path="UnitTests/UnitTests.csproj" />
+  <Project Path="Web/Web.csproj" />
+</Solution>
