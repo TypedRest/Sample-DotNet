@@ -1,6 +1,6 @@
 using TypedRest.Serializers;
 
-namespace AddressBook.Generated;
+namespace AddressBook;
 
 // The rest of this class is generated from the OpenAPI document by TypedRest.SourceGenerator.
 public partial class AddressBookClient

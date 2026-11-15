@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{08E9A285-01C3-4313-8190-25AE9398520A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedClient", "GeneratedClient\GeneratedClient.csproj", "{BEF91973-39DB-4EFD-B6F4-F44B629E5314}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Generated", "Client.Generated\Client.Generated.csproj", "{BEF91973-39DB-4EFD-B6F4-F44B629E5314}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{E7F6054C-E21A-4756-AF39-FA35126BCBF6}"
 EndProject
