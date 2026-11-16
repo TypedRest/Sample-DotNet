@@ -4,7 +4,6 @@
   "packageRules": [
     {
       "matchPackageNames": ["dotnet-sdk"],
-      "matchUpdateTypes": ["patch"],
       "enabled": false,
       "description": "Using automatic roll-forward instead of explicit update"
     },
